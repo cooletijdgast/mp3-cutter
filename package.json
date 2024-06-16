@@ -1,0 +1,27 @@
+{
+  "name": "simple-mp3-cutter",
+  "version": "1.0.0",
+  "description": "Simple library to cut mp3 files, i did not make this library, I just made a package out of it. Original git; https://github.com/lubenard/simple-mp3-cutter.git",
+  "main": "cutter.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cooletijdgast/simple-mp3-cutter-package.git"
+  },
+  "keywords": [
+    "mp3 cutter",
+    "mp3 modifier",
+    "mp3"
+  ],
+  "author": "Cooletijdgast",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cooletijdgast/simple-mp3-cutter-package/issues"
+  },
+  "homepage": "https://github.com/cooletijdgast/simple-mp3-cutter-package#readme"
+}

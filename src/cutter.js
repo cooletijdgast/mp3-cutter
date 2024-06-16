@@ -1,4 +1,4 @@
-class mp3cutter {
+class MP3Cutter {
 	//libPath must end with a slash
 	constructor(libPath = "./lib/", log = false) {
         self.Mp3LameEncoderConfig = {
@@ -84,3 +84,5 @@ class mp3cutter {
 		this.callback(compressed_blob);
 	}
 }
+
+exports.MP3Cutter;
