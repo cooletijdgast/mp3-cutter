@@ -1,46 +1,38 @@
-import { Lame } from "node-lame";
 import { existsSync } from "fs";
+import ffmpeg from "fluent-ffmpeg";
 
 export class MP3Cutter {
-  public async cut(src: string, start: number, end: number, options: Options) {
-    if (!src || !start || !end) {
-      throw "Invalid parameters!";
+  public async cut(
+    src: string,
+    start: number,
+    end: number,
+    options: Options
+  ): Promise<void> {
+    if (!src) {
+      Promise.reject(new Error(`Invalid parameters! Got ${src}`));
     }
 
     if (!existsSync(src)) {
-      throw `Giving file doesn't exists, got ${src}`;
+      Promise.reject(new Error(`Given file doesn't exists, got ${src}`));
     }
 
     if (start > end) {
-      throw "Start is bigger than end!";
+      Promise.reject(new Error("Start is bigger than end!"));
     } else if (start < 0 || end < 0) {
-      throw "Start or end is negative, cannot process";
+      Promise.reject(new Error("Start or end is negative, cannot process"));
     }
 
-    // Convert file into Buffer
-    const lamedecoder = new Lame({ output: "buffer" }).setFile(src);
-    lamedecoder.decode().then(() => {
-      const buffer = lamedecoder.getBuffer();
-      this.encodeFile(buffer, options);
-    });
-  }
-
-  private encodeFile(buffer: Buffer, options: Options) {
-    const lameEncoder = new Lame({
-      output: options.outputName,
-      sfreq: options.sampleRate,
-      bitrate: options.bitrate ?? 192,
-    }).setBuffer(buffer);
-
-    // Encode into mp3
-    lameEncoder
-      .encode()
-      .then(() => {
-        console.log("encoding finished");
+    ffmpeg(src)
+      .setStartTime(start)
+      .setDuration(end - start)
+      .output(options.outputName ?? src)
+      .on("end", () => {
+        console.log("File has been cut successfully");
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .on("error", (err) => {
+        console.error("Error cutting the file: ", err);
+      })
+      .run();
   }
 }
 
