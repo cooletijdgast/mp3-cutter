@@ -1,6 +1,6 @@
 {
   "name": "@cooletijdgast/mp3-cutter",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Library to cut mp3 files, inspired by https://github.com/lubenard/simple-mp3-cutter.git",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
