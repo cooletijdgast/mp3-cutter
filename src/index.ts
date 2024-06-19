@@ -4,16 +4,20 @@ import ffmpeg from "fluent-ffmpeg";
 export class MP3Cutter {
   public async cut(
     src: string,
+    outputName: string,
     start: number,
     end: number,
-    options: Options
   ): Promise<void> {
-    if (!src) {
-      Promise.reject(new Error(`Invalid parameters! Got ${src}`));
+    if (!src || !outputName) {
+      Promise.reject(new Error(`Invalid parameters! Got ${src} ${outputName}`));
     }
 
     if (!existsSync(src)) {
       Promise.reject(new Error(`Given file doesn't exists, got ${src}`));
+    }
+
+    if(src == outputName){
+      Promise.reject(new Error(`Source and output name must be different`));
     }
 
     if (start > end) {
@@ -25,7 +29,7 @@ export class MP3Cutter {
     ffmpeg(src)
       .setStartTime(start)
       .setDuration(end - start)
-      .output(options.outputName ?? src)
+      .output(outputName)
       .on("end", () => {
         console.log("File has been cut successfully");
       })
@@ -34,12 +38,6 @@ export class MP3Cutter {
       })
       .run();
   }
-}
-
-export class Options {
-  outputName!: string;
-  bitrate?: Bitrate;
-  sampleRate?: SampleRate;
 }
 
 export type Bitrate =
